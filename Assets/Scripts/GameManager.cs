@@ -21,15 +21,18 @@ public class GameManager : MonoBehaviour
 
     [Header("UI")]
     [SerializeField] TextMeshProUGUI _startText;
+    [SerializeField] TextMeshProUGUI _timerText;
 
     private void Start()
     {
         _dir = GetComponent<PlayableDirector>();
+        _timerText.alpha = 0;
     }
 
     public void StartGame()
     {
         IsGameStarted = true;
+        _timerText.DOFade(1, 0.5f);
     }
 
     void Update()

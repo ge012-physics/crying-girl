@@ -1,18 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class GameClock : MonoBehaviour
 {
-    // Start is called before the first frame update
+    [SerializeField] TextMeshProUGUI _timerText;
+    GameManager _game;
+    float _timeElapsed;
+
     void Start()
     {
-        
+        _game = GameManager.Instance;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+        if (!_game.IsGameStarted) return;
+
+        _timeElapsed += Time.deltaTime;
+        _timerText.text = Mathf.Floor(_timeElapsed).ToString();
     }
 }
