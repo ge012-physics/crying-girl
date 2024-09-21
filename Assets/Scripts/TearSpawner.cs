@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 using UnityEngine;
 
 public class TearSpawner : MonoBehaviour
@@ -10,16 +13,15 @@ public class TearSpawner : MonoBehaviour
     [SerializeField] float _offsetRange = 5f;
     [SerializeField] Vector2 delayRange = new(1f, 5f);
 
-
     void Start()
     {
         StartCoroutine(SpawnRandomly());
     }
+
     IEnumerator SpawnRandomly()
     {
         while (true)
         {
-
             float delay = Random.Range(delayRange.x, delayRange.y);
 
             yield return new WaitForSeconds(delay);
@@ -51,9 +53,25 @@ public class TearSpawner : MonoBehaviour
         return Quaternion.LookRotation(randomRotation * direction);
     }
 
+#if UNITY_EDITOR
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red.WithAlpha(0.2f);
         Gizmos.DrawCube(transform.position, _offsetRange * new Vector3(2, 1 / _offsetRange, 2));
+
+        // spread angle gizmos
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(transform.position, transform.position + (-transform.up * 3) + transform.forward * _spreadAngle / 2);
+        Gizmos.DrawLine(transform.position, transform.position + (-transform.up * 3) + -transform.forward * _spreadAngle / 2);
+        Gizmos.DrawLine(transform.position, transform.position + (-transform.up * 3) + -transform.right * _spreadAngle / 2);
+        Gizmos.DrawLine(transform.position, transform.position + (-transform.up * 3) + transform.right * _spreadAngle / 2);
+        var oldMtx = Gizmos.matrix;
+        var mtx = Matrix4x4.TRS(transform.position + (-transform.up * 3), transform.rotation, new(1, 0.01f, 1));
+        Gizmos.matrix = mtx;
+        Handles.matrix = mtx;
+        Handles.Label(Vector3.zero, $"Spread angle: {_spreadAngle}");
+        Gizmos.DrawWireSphere(Vector3.zero, _spreadAngle / 2);
+        Gizmos.matrix = oldMtx;
     }
+#endif
 }
