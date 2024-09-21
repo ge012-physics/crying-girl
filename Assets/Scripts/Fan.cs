@@ -9,12 +9,17 @@ public class Fan : MonoBehaviour
     [field: SerializeField]
     public bool IsOn { get; set; }
 
+    [Header("References")]
+    [SerializeField] Transform _fanHead;
+    [SerializeField] Transform _fanBlades;
+    [SerializeField] AudioSource _audio;
+    [SerializeField] Transform _fanBlowPoint;
+
+    [Header("Settings")]
     [SerializeField] float _rotateSpeed = 1;
+    [SerializeField] float _fanBladeSpeed = 10;
     [SerializeField] float _fanForce = 5;
     [SerializeField] float _maxAngle = 45;
-    [SerializeField] AudioSource _audio;
-
-    [SerializeField] Transform _fanBlowPoint;
     [SerializeField] float _fanRange;
 
     float _startY;
@@ -22,7 +27,7 @@ public class Fan : MonoBehaviour
 
     void Start()
     {
-        _startY = transform.rotation.eulerAngles.y;
+        _startY = _fanHead.rotation.eulerAngles.y;
     }
 
     public void ToggleOn()
@@ -36,22 +41,23 @@ public class Fan : MonoBehaviour
     {
         if (!IsOn) return;
         _elapsed += Time.deltaTime;
+        _fanBlades.transform.Rotate(new Vector3(0, 0, _fanBladeSpeed));
 
         float y = Mathf.Sin(_elapsed * _rotateSpeed) * _maxAngle;
-        transform.rotation = Quaternion.Euler(0, _startY + y, 0);
+        _fanHead.rotation = Quaternion.Euler(0, _startY + y, 0);
 
-        if (Physics.BoxCast(_fanBlowPoint.position, Vector3.one, transform.forward, out RaycastHit hit, transform.rotation, _fanRange))
+        if (Physics.BoxCast(_fanBlowPoint.position, Vector3.one * 2, _fanBlowPoint.forward, out RaycastHit hit, _fanBlowPoint.rotation, _fanRange))
         {
             if (!hit.collider.TryGetComponent(out Rigidbody rb)) return;
 
-            rb.AddForce(transform.forward * _fanForce);
+            rb.AddForce(_fanBlowPoint.forward * _fanForce);
         }
     }
 
     private void OnDrawGizmos()
     {
         Gizmos.color = new Color(0, 0.5f, 0, 0.2f);
-        Gizmos.matrix = transform.localToWorldMatrix;
-        Gizmos.DrawCube(new Vector3(_fanBlowPoint.localPosition.x, _fanBlowPoint.localPosition.y, _fanBlowPoint.localPosition.z + _fanRange / 2), new Vector3(2f, 2f, _fanRange));
+        Gizmos.matrix = _fanHead.localToWorldMatrix;
+        Gizmos.DrawCube(new Vector3(_fanBlowPoint.localPosition.x, _fanBlowPoint.localPosition.y, _fanBlowPoint.localPosition.z + _fanRange / 2), new Vector3(4f, 4f, _fanRange));
     }
 }
