@@ -23,6 +23,11 @@ public class Tear : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
+        if (collision.gameObject.TryGetComponent(out PaperHealth paper))
+        {
+            paper.TakeDamage(1);
+        }
+
         Destroy(gameObject);
         // TODO: game over or health decreasee when paper hit
     }
