@@ -23,9 +23,7 @@ public class TearSpawner : MonoBehaviour
         while (true)
         {
             float delay = Random.Range(delayRange.x, delayRange.y);
-
             yield return new WaitForSeconds(delay);
-
 
             float randomXOffset = Random.Range(-_offsetRange, _offsetRange);
             float randomZOffset = Random.Range(-_offsetRange, _offsetRange);
@@ -36,7 +34,7 @@ public class TearSpawner : MonoBehaviour
                 transform.position.z + randomZOffset
             );
 
-            Vector3 forward = transform.transform.forward;
+            Vector3 forward = transform.forward;
             var randomizedDirection = RandomizeDirection(forward, _spreadAngle);
 
             Instantiate(_tearPrefab, randomizedSpawnPosition, randomizedDirection);
@@ -50,7 +48,7 @@ public class TearSpawner : MonoBehaviour
 
         Quaternion randomRotation = Quaternion.Euler(randomPitch, randomYaw, 0);
 
-        return Quaternion.LookRotation(randomRotation * direction);
+        return Quaternion.LookRotation(randomRotation * -direction);
     }
 
 #if UNITY_EDITOR
@@ -62,12 +60,14 @@ public class TearSpawner : MonoBehaviour
         // spread angle gizmos
         Gizmos.color = Color.red;
         var angle = _offsetRange + _spreadAngle / 2;
-        Gizmos.DrawLine(transform.position + (transform.forward * _offsetRange), transform.position + (-transform.up * 3) + transform.forward * angle);
-        Gizmos.DrawLine(transform.position + (-transform.forward * _offsetRange), transform.position + (-transform.up * 3) + -transform.forward * angle);
-        Gizmos.DrawLine(transform.position + (-transform.right * _offsetRange), transform.position + (-transform.up * 3) + -transform.right * angle);
-        Gizmos.DrawLine(transform.position + (transform.right * _offsetRange), transform.position + (-transform.up * 3) + transform.right * angle);
+        var fwd = transform.forward * 3;
+        Gizmos.DrawLine(transform.position + (transform.up * _offsetRange), transform.position + fwd + transform.up * angle);
+        Gizmos.DrawLine(transform.position + (-transform.up * _offsetRange), transform.position + fwd + -transform.up * angle);
+        Gizmos.DrawLine(transform.position + (-transform.right * _offsetRange), transform.position + fwd + -transform.right * angle);
+        Gizmos.DrawLine(transform.position + (transform.right * _offsetRange), transform.position + fwd + transform.right * angle);
+
         var oldMtx = Gizmos.matrix;
-        var mtx = Matrix4x4.TRS(transform.position + (-transform.up * 3), transform.rotation, new(1, 0.01f, 1));
+        var mtx = Matrix4x4.TRS(transform.position + transform.forward * 3, Quaternion.Euler(transform.rotation.eulerAngles.x + 90, transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z), new(1, 0.01f, 1));
         Gizmos.matrix = mtx;
         Handles.matrix = mtx;
         Handles.Label(Vector3.zero, $"Spread angle: {_spreadAngle}");

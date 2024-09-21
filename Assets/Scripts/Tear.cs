@@ -18,7 +18,7 @@ public class Tear : MonoBehaviour
 
     void FixedUpdate()
     {
-        _rb.velocity = transform.forward * -Physics.gravity.y;
+        _rb.velocity = transform.forward * Physics.gravity.y;
     }
 
     void OnCollisionEnter(Collision collision)
