@@ -21,6 +21,7 @@ public class Fan : MonoBehaviour
     [SerializeField] float _fanForce = 5;
     [SerializeField] float _maxAngle = 45;
     [SerializeField] float _fanRange;
+    [SerializeField] AudioClip _switchSound;
 
     float _startY;
     float _elapsed; // so it can maintain the rot when i turn it off
@@ -32,9 +33,17 @@ public class Fan : MonoBehaviour
 
     public void ToggleOn()
     {
-        // TODO (zsfer): uncomment once we have audio
-        // _audio.Play();
         IsOn = !IsOn;
+        _audio.PlayOneShot(_switchSound);
+        if (IsOn)
+        {
+            _audio.Play();
+        }
+
+        else 
+        {
+            _audio.Stop();
+        }
     }
 
     void Update()
