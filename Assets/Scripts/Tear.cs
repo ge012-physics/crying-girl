@@ -21,9 +21,9 @@ public class Tear : MonoBehaviour
         _rb.velocity = transform.forward * Physics.gravity.y;
     }
 
-    void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if (collision.gameObject.TryGetComponent(out PaperHealth paper))
+        if (other.gameObject.TryGetComponent(out PaperHealth paper))
         {
             paper.TakeDamage(1);
         }
@@ -31,4 +31,5 @@ public class Tear : MonoBehaviour
         Destroy(gameObject);
         // TODO: game over or health decreasee when paper hit
     }
+
 }
