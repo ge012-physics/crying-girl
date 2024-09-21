@@ -4,11 +4,10 @@ using UnityEngine;
 
 public class TearSpawner : MonoBehaviour
 {
-    public GameObject objectToSpawn; 
-    public Transform spawnPoint;
-    public float spreadAngle = 5f;
-    public float offsetRange = 5f;
-    public Vector2 delayRange = new Vector2(1f, 5f);
+    [SerializeField] GameObject _tearPrefab;
+    [SerializeField] float _spreadAngle = 5f;
+    [SerializeField] float _offsetRange = 5f;
+    [SerializeField] Vector2 delayRange = new(1f, 5f);
 
 
     void Start()
@@ -25,20 +24,19 @@ public class TearSpawner : MonoBehaviour
             yield return new WaitForSeconds(delay);
 
 
-            float randomXOffset = Random.Range(-offsetRange, offsetRange);
-            float randomZOffset = Random.Range(-offsetRange, offsetRange);
+            float randomXOffset = Random.Range(-_offsetRange, _offsetRange);
+            float randomZOffset = Random.Range(-_offsetRange, _offsetRange);
 
-            Vector3 randomizedSpawnPosition = new Vector3(
-                spawnPoint.position.x + randomXOffset,
-                spawnPoint.position.y,
-                spawnPoint.position.z + randomZOffset
+            Vector3 randomizedSpawnPosition = new(
+                transform.position.x + randomXOffset,
+                transform.position.y,
+                transform.position.z + randomZOffset
             );
 
-            Vector3 forward = spawnPoint.transform.forward;
-            var randomizedDirection = RandomizeDirection(forward, spreadAngle);
+            Vector3 forward = transform.transform.forward;
+            var randomizedDirection = RandomizeDirection(forward, _spreadAngle);
 
-            var tear = Instantiate(objectToSpawn, randomizedSpawnPosition, randomizedDirection);
-           
+            Instantiate(_tearPrefab, randomizedSpawnPosition, randomizedDirection);
         }
     }
 

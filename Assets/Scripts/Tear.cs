@@ -1,19 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class TearSpawn : MonoBehaviour
+public class Tear : MonoBehaviour
 {
-    private Rigidbody rb;
+    private Rigidbody _rb;
+    [SerializeField] GameObject _tearHitParticlePrefab;
 
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
+        _rb = GetComponent<Rigidbody>();
     }
 
     void FixedUpdate()
     {
-        rb.velocity = transform.forward * -Physics.gravity.y;
+        _rb.velocity = transform.forward * -Physics.gravity.y;
     }
 
     void OnCollisionEnter(Collision collision)
