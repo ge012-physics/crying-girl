@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class TearSpawner : MonoBehaviour
@@ -48,5 +49,11 @@ public class TearSpawner : MonoBehaviour
         Quaternion randomRotation = Quaternion.Euler(randomPitch, randomYaw, 0);
 
         return Quaternion.LookRotation(randomRotation * direction);
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red.WithAlpha(0.2f);
+        Gizmos.DrawCube(transform.position, _offsetRange * new Vector3(2, 1 / _offsetRange, 2));
     }
 }
