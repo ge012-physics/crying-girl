@@ -32,7 +32,7 @@ public class Fan : MonoBehaviour
 
     public void ToggleOn()
     {
-        // (zsfer): uncomment once we have audio
+        // TODO (zsfer): uncomment once we have audio
         // _audio.Play();
         IsOn = !IsOn;
     }
