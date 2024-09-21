@@ -22,10 +22,12 @@ public class GameManager : MonoBehaviour
     [Header("UI")]
     [SerializeField] TextMeshProUGUI _startText;
     [SerializeField] TextMeshProUGUI _timerText;
+    AudioSource _audioSource;
 
     private void Start()
     {
         _dir = GetComponent<PlayableDirector>();
+        _audioSource = GetComponent<AudioSource>();
         _timerText.alpha = 0;
     }
 
@@ -44,6 +46,7 @@ public class GameManager : MonoBehaviour
                 _startText.DOFade(0, 0.3f);
                 if (_dir != null)
                     _dir.Play();
+                _audioSource.Play();
             }
         }
     }
