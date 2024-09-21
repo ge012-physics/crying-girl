@@ -18,12 +18,12 @@ public class TearSpawner : MonoBehaviour
     void Start()
     {
         _game = GameManager.Instance;
-        StartCoroutine(SpawnRandomly());
+        _game.OnGameStart.AddListener(() => StartCoroutine(SpawnRandomly()));
     }
 
     IEnumerator SpawnRandomly()
     {
-        while (_game == null || _game.IsGameStarted)
+        while (_game.IsGameStarted)
         {
             float delay = Random.Range(delayRange.x, delayRange.y);
             yield return new WaitForSeconds(delay);

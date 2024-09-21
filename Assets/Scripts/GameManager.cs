@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Playables;
 
 public class GameManager : MonoBehaviour
@@ -12,6 +13,7 @@ public class GameManager : MonoBehaviour
     void Awake()
     {
         Instance = this;
+        OnGameStart ??= new UnityEvent();
     }
     #endregion
 
@@ -24,6 +26,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI _timerText;
     AudioSource _audioSource;
 
+    public UnityEvent OnGameStart;
+
     private void Start()
     {
         _dir = GetComponent<PlayableDirector>();
@@ -35,6 +39,7 @@ public class GameManager : MonoBehaviour
     {
         IsGameStarted = true;
         _timerText.DOFade(1, 0.5f);
+        OnGameStart.Invoke();
     }
 
     void Update()
