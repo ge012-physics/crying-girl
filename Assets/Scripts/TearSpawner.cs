@@ -13,14 +13,17 @@ public class TearSpawner : MonoBehaviour
     [SerializeField] float _offsetRange = 5f;
     [SerializeField] Vector2 delayRange = new(1f, 5f);
 
+    GameManager _game;
+
     void Start()
     {
+        _game = GameManager.Instance;
         StartCoroutine(SpawnRandomly());
     }
 
     IEnumerator SpawnRandomly()
     {
-        while (GameManager.Instance.IsGameStarted)
+        while (_game == null || _game.IsGameStarted)
         {
             float delay = Random.Range(delayRange.x, delayRange.y);
             yield return new WaitForSeconds(delay);

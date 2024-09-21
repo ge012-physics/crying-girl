@@ -42,7 +42,8 @@ public class GameManager : MonoBehaviour
             if (Input.GetMouseButtonDown(0))
             {
                 _startText.DOFade(0, 0.3f);
-                _dir.Play();
+                if (_dir != null)
+                    _dir.Play();
             }
         }
     }

@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if (!_game.IsGameStarted) return;
+        if (_game != null && !_game.IsGameStarted) return;
 
         if (Input.GetMouseButtonDown(0))
         {
