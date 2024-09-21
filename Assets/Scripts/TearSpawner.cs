@@ -61,16 +61,17 @@ public class TearSpawner : MonoBehaviour
 
         // spread angle gizmos
         Gizmos.color = Color.red;
-        Gizmos.DrawLine(transform.position, transform.position + (-transform.up * 3) + transform.forward * _spreadAngle / 2);
-        Gizmos.DrawLine(transform.position, transform.position + (-transform.up * 3) + -transform.forward * _spreadAngle / 2);
-        Gizmos.DrawLine(transform.position, transform.position + (-transform.up * 3) + -transform.right * _spreadAngle / 2);
-        Gizmos.DrawLine(transform.position, transform.position + (-transform.up * 3) + transform.right * _spreadAngle / 2);
+        var angle = _offsetRange + _spreadAngle / 2;
+        Gizmos.DrawLine(transform.position + (transform.forward * _offsetRange), transform.position + (-transform.up * 3) + transform.forward * angle);
+        Gizmos.DrawLine(transform.position + (-transform.forward * _offsetRange), transform.position + (-transform.up * 3) + -transform.forward * angle);
+        Gizmos.DrawLine(transform.position + (-transform.right * _offsetRange), transform.position + (-transform.up * 3) + -transform.right * angle);
+        Gizmos.DrawLine(transform.position + (transform.right * _offsetRange), transform.position + (-transform.up * 3) + transform.right * angle);
         var oldMtx = Gizmos.matrix;
         var mtx = Matrix4x4.TRS(transform.position + (-transform.up * 3), transform.rotation, new(1, 0.01f, 1));
         Gizmos.matrix = mtx;
         Handles.matrix = mtx;
         Handles.Label(Vector3.zero, $"Spread angle: {_spreadAngle}");
-        Gizmos.DrawWireSphere(Vector3.zero, _spreadAngle / 2);
+        Gizmos.DrawWireSphere(Vector3.zero, _offsetRange + _spreadAngle / 2);
         Gizmos.matrix = oldMtx;
     }
 #endif
