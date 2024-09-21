@@ -20,7 +20,7 @@ public class TearSpawner : MonoBehaviour
 
     IEnumerator SpawnRandomly()
     {
-        while (true)
+        while (GameManager.Instance.IsGameStarted)
         {
             float delay = Random.Range(delayRange.x, delayRange.y);
             yield return new WaitForSeconds(delay);

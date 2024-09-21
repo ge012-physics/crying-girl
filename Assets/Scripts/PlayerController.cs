@@ -4,13 +4,16 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    GameManager _game;
     void Start()
     {
-
+        _game = GameManager.Instance;
     }
 
     void Update()
     {
+        if (!_game.IsGameStarted) return;
+
         if (Input.GetMouseButtonDown(0))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
