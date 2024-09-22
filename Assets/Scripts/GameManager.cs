@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour
 
     [Header("UI")]
     [SerializeField] Transform _startText;
-    [SerializeField] TextMeshProUGUI _timerText;
+    [SerializeField] TextMeshProUGUI _timerText, _instructionText;
     [SerializeField] Transform _endChalkboard;
     [SerializeField] Image _fade;
     [SerializeField] TextMeshProUGUI _endTimer, _endTear;
@@ -43,7 +43,6 @@ public class GameManager : MonoBehaviour
     [Header("References")]
     [SerializeField] GameClock _clock;
     [SerializeField] TearSpawner _tearSpawner;
-
 
     public UnityEvent OnGameStart;
 
@@ -61,23 +60,23 @@ public class GameManager : MonoBehaviour
     {
         IsGameStarted = true;
         _timerText.DOFade(1, 0.5f);
+        _instructionText.DOFade(0, 0.2f).SetDelay(5);
         OnGameStart.Invoke();
     }
 
     void Update()
     {
-        if (!IsGameStarted && CurrentState == GameState.Start)
+        if (IsGameStarted && CurrentState == GameState.Game && CurrentState != GameState.End) return;
+
+        if (Input.GetMouseButtonDown(0))
         {
-            if (Input.GetMouseButtonDown(0))
+            CurrentState = GameState.Game;
+            _startText.DOLocalMoveY(1200, 1f).OnComplete(() =>
             {
-                CurrentState = GameState.Game;
-                _startText.DOLocalMoveY(1200, 1f).OnComplete(() =>
-                {
-                    if (_dir != null)
-                        _dir.Play();
-                    _audioSource.Play();
-                }).SetEase(Ease.OutBounce);
-            }
+                if (_dir != null)
+                    _dir.Play();
+                _audioSource.Play();
+            }).SetEase(Ease.OutBounce);
         }
     }
 
@@ -104,9 +103,9 @@ public class GameManager : MonoBehaviour
 
     public void AddFanToConcurrency(Fan fan)
     {
-        // (zsfer): I HATE THIS !!!!! I WANT TO IMPLEMENT MY OWN LINKED LIST !!!
         if (Fans.Contains(fan))
         {
+            // remove from queue, no way to do it so just remake the queue without the fan ref
             var queue = new Queue<Fan>(Fans.Where(f => f != fan));
             Fans = queue;
             return;

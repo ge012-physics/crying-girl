@@ -1,5 +1,4 @@
 using DG.Tweening;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Tear : MonoBehaviour
@@ -12,9 +11,13 @@ public class Tear : MonoBehaviour
     void Start()
     {
         _rb = GetComponent<Rigidbody>();
-        var startColor = _renderer.material.color;
-        _renderer.material.SetColor("_BaseColor", startColor.WithAlpha(0));
-        _renderer.material.DOColor(startColor, 2f);
+        var endColor = _renderer.material.color;
+
+        var startColor = endColor;
+        startColor.a = 0;
+
+        _renderer.material.SetColor("_BaseColor", startColor);
+        _renderer.material.DOColor(endColor, 2f);
 
         
         RaycastHit[] hits = Physics.RaycastAll(gameObject.transform.position, -gameObject.transform.forward, 100f);
