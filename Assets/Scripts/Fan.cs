@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
+using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 
 public class Fan : MonoBehaviour
@@ -23,6 +25,8 @@ public class Fan : MonoBehaviour
     [SerializeField] float _fanRange;
     [SerializeField] AudioClip _switchSound;
 
+    [SerializeField] LayerMask _fanMask;
+
     float _startY;
     float _elapsed; // so it can maintain the rot when i turn it off
 
@@ -40,7 +44,7 @@ public class Fan : MonoBehaviour
             _audio.Play();
         }
 
-        else 
+        else
         {
             _audio.Stop();
         }
@@ -55,11 +59,14 @@ public class Fan : MonoBehaviour
         float y = Mathf.Sin(_elapsed * _rotateSpeed) * _maxAngle;
         _fanHead.rotation = Quaternion.Euler(0, _startY + y, 0);
 
-        if (Physics.BoxCast(_fanBlowPoint.position, Vector3.one * 2, _fanBlowPoint.forward, out RaycastHit hit, _fanBlowPoint.rotation, _fanRange))
-        {
-            if (!hit.collider.TryGetComponent(out Rigidbody rb)) return;
+        var cols = Physics.OverlapBox(_fanBlowPoint.position, (Vector3.one * 2) + Vector3.forward * _fanRange, _fanBlowPoint.rotation);
 
-            rb.AddForce(_fanBlowPoint.forward * _fanForce);
+        foreach (var col in cols)
+        {
+            if (col.TryGetComponent(out Rigidbody rb))
+            {
+                rb.AddForce(_fanBlowPoint.forward * _fanForce);
+            }
         }
     }
 

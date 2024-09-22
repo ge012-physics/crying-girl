@@ -306,7 +306,7 @@ MonoBehaviour:
   _fanBlowPoint: {fileID: 9184229564730023305}
   _rotateSpeed: 1
   _fanBladeSpeed: 10
-  _fanForce: 10
+  _fanForce: 15
   _maxAngle: 45
   _fanRange: 9.33
   _switchSound: {fileID: 8300000, guid: 0fe4d6945538f40acaec7c0df3a04e32, type: 3}
@@ -452,7 +452,7 @@ Transform:
   m_GameObject: {fileID: 7956244194797220115}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0, z: 2.021}
+  m_LocalPosition: {x: 0, y: -0.39, z: 1.16}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
