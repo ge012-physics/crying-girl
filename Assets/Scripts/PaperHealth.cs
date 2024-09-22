@@ -1,36 +1,32 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PaperHealth : MonoBehaviour
 {
-    [SerializeField] private int _maxHP = 5;
+    [SerializeField] private Mesh[] _meshStates;
+    [SerializeField] private int _maxHP = 3;
     private int _currHP;
+    private MeshFilter _filter;
 
-    void Start () 
+    void Start()
     {
+        _filter = GetComponent<MeshFilter>();
         _currHP = _maxHP;
+        UpdateMesh();
     }
 
-    public void TakeDamage(int damage) 
+    public void TakeDamage(int damage)
     {
         _currHP -= damage;
-        Debug.Log("Paper HP: " + _currHP);
-
-        if (_currHP <= 0) 
+        if (_currHP <= 0)
         {
-            DestroyPaper();
+            GameManager.Instance.GameOver();
         }
+        UpdateMesh();
     }
 
-    private void DestroyPaper() 
+    void UpdateMesh()
     {
-        Debug.Log("Paper Destroyed!");
-        Destroy(gameObject);
-    }
-
-    void OnGUI()
-    {
-        GUI.Label(new Rect(10, 10, 100, 20), "Paper HP: " + _currHP);
+        if (_currHP - 1 < 0) return;
+        _filter.mesh = _meshStates[_currHP - 1];
     }
 }

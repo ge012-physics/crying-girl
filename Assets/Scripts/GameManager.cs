@@ -59,6 +59,12 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void GameOver()
+    {
+        print("GAME OVER!");
+        IsGameStarted = false;
+    }
+
     public void AddFanToConcurrency(Fan fan)
     {
         // (zsfer): I HATE THIS !!!!! I WANT TO IMPLEMENT MY OWN LINKED LIST !!!

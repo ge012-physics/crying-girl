@@ -988,6 +988,34 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 88603084696725329, guid: e43057034e2e8482b9092adbe709f786,
+        type: 3}
+      propertyPath: _maxHP
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 88603084696725329, guid: e43057034e2e8482b9092adbe709f786,
+        type: 3}
+      propertyPath: _meshStates.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 88603084696725329, guid: e43057034e2e8482b9092adbe709f786,
+        type: 3}
+      propertyPath: _meshStates.Array.data[0]
+      value: 
+      objectReference: {fileID: 4104201938861654627, guid: 00ddcc1149d0945ed961524372945807,
+        type: 3}
+    - target: {fileID: 88603084696725329, guid: e43057034e2e8482b9092adbe709f786,
+        type: 3}
+      propertyPath: _meshStates.Array.data[1]
+      value: 
+      objectReference: {fileID: 4029389196587821708, guid: e0abd36b15e1647bc9244084d308a7ee,
+        type: 3}
+    - target: {fileID: 88603084696725329, guid: e43057034e2e8482b9092adbe709f786,
+        type: 3}
+      propertyPath: _meshStates.Array.data[2]
+      value: 
+      objectReference: {fileID: 5640083751283761811, guid: a682d7315fd9b4b5e92b21899960811e,
+        type: 3}
     - target: {fileID: 2981125488919796373, guid: e43057034e2e8482b9092adbe709f786,
         type: 3}
       propertyPath: m_Size.x
