@@ -896,6 +896,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 13400000, guid: 1eff391b4f0c4614d927e44104ed6775,
         type: 2}
+    - target: {fileID: 8635034039227242461, guid: 9168afca88761e745896120055cf1a9c,
+        type: 3}
+      propertyPath: m_TagString
+      value: Table
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1435,6 +1440,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: TearSpawner
+      objectReference: {fileID: 0}
+    - target: {fileID: 8512865908048060200, guid: 6589571540a6e4fd4be157eef1d76cc0,
+        type: 3}
+      propertyPath: spawnPerDifficultyIncrease
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8580731118400960688, guid: 6589571540a6e4fd4be157eef1d76cc0,
         type: 3}
