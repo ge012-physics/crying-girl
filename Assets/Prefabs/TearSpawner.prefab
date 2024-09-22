@@ -46,6 +46,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _tearPrefab: {fileID: 8671514595995799739, guid: 7961e5091f6ff124ca67a3099abc3e22,
     type: 3}
+  _predictPrefab: {fileID: 1343165970732076393, guid: 108fb398f66531845abec6bf7a56124a,
+    type: 3}
   _spreadAngle: 5
   _offsetRange: 5
   delayRange: {x: 1, y: 5}

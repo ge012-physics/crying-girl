@@ -126,7 +126,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _tearHitParticlePrefab: {fileID: 2865392711627282905, guid: 3fae906742af64ae9a7b42c64e6e9edf,
     type: 3}
+  _predictPrefab: {fileID: 1343165970732076393, guid: 108fb398f66531845abec6bf7a56124a,
+    type: 3}
   _renderer: {fileID: 7158353843466432878}
+  isPredicted: 0
 --- !u!65 &3092977798413506291
 BoxCollider:
   m_ObjectHideFlags: 0

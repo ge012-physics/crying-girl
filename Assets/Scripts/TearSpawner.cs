@@ -12,6 +12,8 @@ public class TearSpawner : MonoBehaviour
     [SerializeField] float _spreadAngle = 5f;
     [SerializeField] float _offsetRange = 5f;
     [SerializeField] Vector2 delayRange = new(1f, 5f);
+    [SerializeField] int spawnPerDifficultyIncrease;
+    [SerializeField] int difficultyProgress = 0, maxBurst = 1;
 
     GameManager _game;
 
@@ -23,24 +25,35 @@ public class TearSpawner : MonoBehaviour
 
     IEnumerator SpawnRandomly()
     {
+        
         while (_game.IsGameStarted)
         {
             float delay = Random.Range(delayRange.x, delayRange.y);
             yield return new WaitForSeconds(delay);
 
-            float randomXOffset = Random.Range(-_offsetRange, _offsetRange);
-            float randomZOffset = Random.Range(-_offsetRange, _offsetRange);
+            for (int i = 0; i < Random.Range(1, maxBurst+1); i++)
+            {
+                float randomXOffset = Random.Range(-_offsetRange, _offsetRange);
+                float randomZOffset = Random.Range(-_offsetRange, _offsetRange);
 
-            Vector3 randomizedSpawnPosition = new(
-                transform.position.x + randomXOffset,
-                transform.position.y,
-                transform.position.z + randomZOffset
-            );
+                Vector3 randomizedSpawnPosition = new(
+                    transform.position.x + randomXOffset,
+                    transform.position.y,
+                    transform.position.z + randomZOffset
+                );
 
-            Vector3 forward = transform.forward;
-            var randomizedDirection = RandomizeDirection(forward, _spreadAngle);
+                Vector3 forward = transform.forward;
+                var randomizedDirection = RandomizeDirection(forward, _spreadAngle);
 
-            Instantiate(_tearPrefab, randomizedSpawnPosition, randomizedDirection);
+                Instantiate(_tearPrefab, randomizedSpawnPosition, randomizedDirection);
+            }
+
+            difficultyProgress++;
+            if( difficultyProgress >= spawnPerDifficultyIncrease)
+            {
+                difficultyProgress = 0;
+                maxBurst++;
+            }
         }
     }
 
