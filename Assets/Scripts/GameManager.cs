@@ -5,6 +5,15 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Playables;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+
+public enum GameState
+{
+    Start,
+    Game,
+    End
+}
 
 public class GameManager : MonoBehaviour
 {
@@ -17,14 +26,24 @@ public class GameManager : MonoBehaviour
     }
     #endregion
 
+    public GameState CurrentState { get; set; }
+
     [field: SerializeField]
     public bool IsGameStarted { get; set; }
     PlayableDirector _dir;
 
     [Header("UI")]
-    [SerializeField] TextMeshProUGUI _startText;
+    [SerializeField] Transform _startText;
     [SerializeField] TextMeshProUGUI _timerText;
+    [SerializeField] Transform _endChalkboard;
+    [SerializeField] Image _fade;
+    [SerializeField] TextMeshProUGUI _endTimer, _endTear;
     AudioSource _audioSource;
+
+    [Header("References")]
+    [SerializeField] GameClock _clock;
+    [SerializeField] TearSpawner _tearSpawner;
+
 
     public UnityEvent OnGameStart;
 
@@ -47,14 +66,17 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        if (!IsGameStarted)
+        if (!IsGameStarted && CurrentState == GameState.Start)
         {
             if (Input.GetMouseButtonDown(0))
             {
-                _startText.DOFade(0, 0.3f);
-                if (_dir != null)
-                    _dir.Play();
-                _audioSource.Play();
+                CurrentState = GameState.Game;
+                _startText.DOLocalMoveY(1200, 1f).OnComplete(() =>
+                {
+                    if (_dir != null)
+                        _dir.Play();
+                    _audioSource.Play();
+                }).SetEase(Ease.OutBounce);
             }
         }
     }
@@ -63,6 +85,21 @@ public class GameManager : MonoBehaviour
     {
         print("GAME OVER!");
         IsGameStarted = false;
+        CurrentState = GameState.End;
+        _fade.gameObject.SetActive(true);
+        _endTimer.text = Mathf.Floor(_clock.TimeElapsed).ToString() + " seconds";
+        _endTear.text = _tearSpawner.TearCount.ToString() + " times";
+
+        var seq = DOTween.Sequence();
+        seq.Append(_fade.DOFade(1, 1))
+            .Append(_endChalkboard.DOLocalMoveY(50, 2).SetEase(Ease.OutBounce));
+
+        seq.Play();
+    }
+
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void AddFanToConcurrency(Fan fan)
@@ -82,7 +119,5 @@ public class GameManager : MonoBehaviour
         }
 
         Fans.Enqueue(fan);
-
-        print(Fans.Count);
     }
 }

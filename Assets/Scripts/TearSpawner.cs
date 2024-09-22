@@ -15,6 +15,8 @@ public class TearSpawner : MonoBehaviour
     [SerializeField] int spawnPerDifficultyIncrease;
     [SerializeField] int difficultyProgress = 0, maxBurst = 1;
 
+    public int TearCount { get; private set; }
+
     GameManager _game;
 
     void Start()
@@ -25,13 +27,13 @@ public class TearSpawner : MonoBehaviour
 
     IEnumerator SpawnRandomly()
     {
-        
+
         while (_game.IsGameStarted)
         {
             float delay = Random.Range(delayRange.x, delayRange.y);
             yield return new WaitForSeconds(delay);
 
-            for (int i = 0; i < Random.Range(1, maxBurst+1); i++)
+            for (int i = 0; i < Random.Range(1, maxBurst + 1); i++)
             {
                 float randomXOffset = Random.Range(-_offsetRange, _offsetRange);
                 float randomZOffset = Random.Range(-_offsetRange, _offsetRange);
@@ -46,10 +48,11 @@ public class TearSpawner : MonoBehaviour
                 var randomizedDirection = RandomizeDirection(forward, _spreadAngle);
 
                 Instantiate(_tearPrefab, randomizedSpawnPosition, randomizedDirection);
+                TearCount++;
             }
 
             difficultyProgress++;
-            if( difficultyProgress >= spawnPerDifficultyIncrease)
+            if (difficultyProgress >= spawnPerDifficultyIncrease)
             {
                 difficultyProgress = 0;
                 maxBurst++;

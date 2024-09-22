@@ -5,9 +5,11 @@ using UnityEngine;
 
 public class GameClock : MonoBehaviour
 {
+
+
     [SerializeField] TextMeshProUGUI _timerText;
     GameManager _game;
-    float _timeElapsed;
+    public float TimeElapsed;
 
     void Start()
     {
@@ -18,7 +20,7 @@ public class GameClock : MonoBehaviour
     {
         if (!_game.IsGameStarted) return;
 
-        _timeElapsed += Time.deltaTime;
-        _timerText.text = Mathf.Floor(_timeElapsed).ToString();
+        TimeElapsed += Time.deltaTime;
+        _timerText.text = Mathf.Floor(TimeElapsed).ToString();
     }
 }
