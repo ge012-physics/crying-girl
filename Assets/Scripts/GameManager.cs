@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using TMPro;
@@ -28,6 +27,9 @@ public class GameManager : MonoBehaviour
 
     public UnityEvent OnGameStart;
 
+    public Queue<Fan> Fans { get; set; } = new();
+    [SerializeField] int _maxFans = 3;
+
     private void Start()
     {
         _dir = GetComponent<PlayableDirector>();
@@ -54,5 +56,16 @@ public class GameManager : MonoBehaviour
                 _audioSource.Play();
             }
         }
+    }
+
+    public void AddFanToConcurrency(Fan fan)
+    {
+        if (Fans.Count >= _maxFans)
+        {
+            var deqFan = Fans.Dequeue();
+            deqFan.ToggleOn(state: false, force: true);
+        }
+
+        Fans.Enqueue(fan);
     }
 }

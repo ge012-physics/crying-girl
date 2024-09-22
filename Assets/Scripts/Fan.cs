@@ -35,19 +35,17 @@ public class Fan : MonoBehaviour
         _startY = _fanHead.rotation.eulerAngles.y;
     }
 
-    public void ToggleOn()
+    public void ToggleOn(bool state = true, bool force = false)
     {
-        IsOn = !IsOn;
+        IsOn = force ? state : !IsOn;
         _audio.PlayOneShot(_switchSound);
-        if (IsOn)
-        {
-            _audio.Play();
-        }
+        if (!force)
+            GameManager.Instance.AddFanToConcurrency(this);
 
+        if (IsOn)
+            _audio.Play();
         else
-        {
             _audio.Stop();
-        }
     }
 
     void Update()
