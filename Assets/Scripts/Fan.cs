@@ -24,8 +24,7 @@ public class Fan : MonoBehaviour
     [SerializeField] float _maxAngle = 45;
     [SerializeField] float _fanRange;
     [SerializeField] AudioClip _switchSound;
-
-    [SerializeField] LayerMask _fanMask;
+    [SerializeField] Renderer _powerIndicator;
 
     float _startY;
     float _elapsed; // so it can maintain the rot when i turn it off
@@ -33,6 +32,7 @@ public class Fan : MonoBehaviour
     void Start()
     {
         _startY = _fanHead.rotation.eulerAngles.y;
+        ToggleOn(state: false, force: true);
     }
 
     public void ToggleOn(bool state = true, bool force = false)
@@ -46,6 +46,8 @@ public class Fan : MonoBehaviour
             _audio.Play();
         else
             _audio.Stop();
+
+        _powerIndicator.material.SetColor("_BaseColor", IsOn ? Color.green : Color.red);
     }
 
     void Update()

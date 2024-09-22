@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -60,6 +61,14 @@ public class GameManager : MonoBehaviour
 
     public void AddFanToConcurrency(Fan fan)
     {
+        // (zsfer): I HATE THIS !!!!! I WANT TO IMPLEMENT MY OWN LINKED LIST !!!
+        if (Fans.Contains(fan))
+        {
+            var queue = new Queue<Fan>(Fans.Where(f => f != fan));
+            Fans = queue;
+            return;
+        }
+
         if (Fans.Count >= _maxFans)
         {
             var deqFan = Fans.Dequeue();
@@ -67,5 +76,7 @@ public class GameManager : MonoBehaviour
         }
 
         Fans.Enqueue(fan);
+
+        print(Fans.Count);
     }
 }
